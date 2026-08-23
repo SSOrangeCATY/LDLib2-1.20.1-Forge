@@ -173,8 +173,8 @@ jobs:
       - name: Publish to Maven
         run: ./gradlew publish --stacktrace
         env:
-          ORG_GRADLE_PROJECT_ptcrysUsername: ${{ secrets.MAVEN_USER }}
-          ORG_GRADLE_PROJECT_ptcrysPassword: ${{ secrets.MAVEN_PASS }}
+          MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
+          MAVEN_USER: ${{ secrets.MAVEN_USER }}
           GRADLE_OPTS: "-Dorg.gradle.daemon=true"
 
       - name: Maven publish summary
