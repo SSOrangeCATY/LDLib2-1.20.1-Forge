@@ -13,6 +13,8 @@ plugins {
 version = mod_version
 group = maven_group
 
+def isRelease = true
+
 base {
     archivesName = "${project.name}-${minecraft_version}"
 }
@@ -297,17 +299,27 @@ tasks.register("printVersion") {
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
-            artifactId = archivesBaseName
             from components.java
         }
     }
     repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/weiliangyan/LDLib2-1.20.1-Forge")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: "weiliangyan"
-                password = System.getenv("GITHUB_TOKEN") ?: System.getenv("GH_TOKEN")
+        if (isRelease) {
+            maven {
+                name = "PtcrysReleases"
+                url = uri("https://maven.ptcrys.net/releases")
+                credentials {
+                    username = project.findProperty('ptcrysUsername')
+                    password = project.findProperty('ptcrysPassword')
+                }
+            }
+        } else {
+            maven {
+                name = "PtcrysSnapshots"
+                url = uri("https://maven.ptcrys.net/snapshots")
+                credentials {
+                    username = project.findProperty('ptcrysUsername')
+                    password = project.findProperty('ptcrysPassword')
+                }
             }
         }
     }
